@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ExamToday
 {
-    public enum enumAddEdit
+    public enum EnumAddEdit
     {
         Add,Edit
     }

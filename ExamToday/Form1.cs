@@ -18,6 +18,7 @@ namespace ExamToday
     {
         Serializetion serializetion;
         Tasks tasks;
+        int index;
         public Form1()
         {
             InitializeComponent();
@@ -32,7 +33,8 @@ namespace ExamToday
         }
         private void button2_Click(object sender, EventArgs e)
         {
-
+            tasks.RemoveTask(checkedListBox1.SelectedItem as ToDoTask);
+            checkedListBox1.Items.RemoveAt(index);
         }
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -59,7 +61,7 @@ namespace ExamToday
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Form2 form2 = new Form2(enumAddEdit, null);
+            Form2 form2 = new Form2(EnumAddEdit.Add, null);
             form2.ShowDialog();
             if(form2.DialogResult == DialogResult.OK)
             {
@@ -70,7 +72,28 @@ namespace ExamToday
 
         private void checkedListBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
+           
+        }
 
+        private void checkedListBox1_ItemCheck(object sender, ItemCheckEventArgs e)
+        {
+            if (e.NewValue == CheckState.Checked)
+                tasks.ChangeCheckState(e.Index, true);
+            else if (e.NewValue == CheckState.Unchecked)
+                tasks.ChangeCheckState(e.Index, false);
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            Form2 form2 = new Form2(EnumAddEdit.Edit, checkedListBox1.SelectedItem as ToDoTask);
+            index = checkedListBox1.SelectedIndex;
+            form2.ShowDialog();
+            if(form2.DialogResult == DialogResult.OK)
+            {
+                tasks.UpdateTodo(checkedListBox1.SelectedIndex, form2.ToDoTask);
+                FillToDoList();
+            }
+            checkedListBox1.SelectedIndex = index;
         }
     }
 }
